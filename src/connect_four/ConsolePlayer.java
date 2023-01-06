@@ -37,7 +37,7 @@ public class ConsolePlayer extends Player {
         String playerName = player_disc == Disc.YELLOW ? "Yellow" : "Red";
 
         while(true) {
-            System.out.printf("Enter the move for %s or \"quit\"\n", playerName);
+            System.out.printf("Enter the move for %s or \"quit\", \"reset\"\n", playerName);
             String move = input.nextLine();
             try {
                 // split the input into whitespace separated tokens
@@ -46,6 +46,9 @@ public class ConsolePlayer extends Player {
                 if (splitArray.length == 1) {
                     if (splitArray[0].toLowerCase().equals("quit")) {
                         return new PlayerMove(Action.QUIT);
+                    }
+                    if (splitArray[0].toLowerCase().equals("reset")) {
+                        return new PlayerMove(Action.RESET);
                     }
                     if (Pattern.matches("[1-9][0-9]*", splitArray[0])) {
                         return new PlayerMove(

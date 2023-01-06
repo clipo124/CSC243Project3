@@ -5,6 +5,8 @@ package connect_four;
 import connect_four.Board;
 import connect_four.Board.Disc;
 import connect_four.Board.Position;
+
+import java.util.List;
 import java.util.Random;
 
 // TODO complete the implementation of the AIPlayer class
@@ -18,12 +20,12 @@ public class AIPlayer extends Player {
     public PlayerMove getMove(Board board) {
         PlayerMove result = null;
         try {
-            int validMoves[] = board.getValidMoves();
+            List<Integer> validMoves = board.getValidMoves();
             Random move = new Random();
-            int maxRange = validMoves.length;
+            int maxRange = validMoves.size();
             int nextMove = move.nextInt(1, maxRange);
 
-            Position position = new Position(validMoves[nextMove]);
+            Position position = new Position(validMoves.get(nextMove));
             result = new PlayerMove(Action.PLAY, position);
             return result;
         } catch (GameException e) {

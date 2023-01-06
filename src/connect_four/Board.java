@@ -4,12 +4,22 @@
 
 package connect_four;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 /**
  * The Board class is a representation of the board state for a game of Connect
  * Four
  */
-public class Board {
+public class Board implements Cloneable {
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Board copiedBoard = null;
+        copiedBoard = (Board) super.clone();
+        return copiedBoard;
+    }
     public enum Disc {
         EMPTY,
         YELLOW,
@@ -79,10 +89,10 @@ public class Board {
 
     /**
      * getValidMoves returns an array of valid moves
-     * @return an array of valid moves
+     * @return a List of valid moves
      */
-    public int[] getValidMoves() {
-        int [] result = null;
+    public List<Integer> getValidMoves() {
+        List<Integer> result = new ArrayList<Integer>();
 
         int valid_count = 0;
         for (int col = 0; col < COLUMNS; col++) {
@@ -91,11 +101,10 @@ public class Board {
             }
         }
 
-        result = new int[valid_count];
         int index = 0;
         for (int col = 0; col < COLUMNS; col++) {
             if (board[0][col] == Disc.EMPTY) {
-                result[index] = col+1;
+                result.add(index, col+1);
                 index += 1;
             }
         }
@@ -115,8 +124,8 @@ public class Board {
     public Disc checkWinner() throws DrawException {
         Disc result = Disc.EMPTY;
 
-        int [] validMoves = getValidMoves();
-        if (validMoves.length == 0) {
+        List<Integer> validMoves = getValidMoves();
+        if (validMoves.size() == 0) {
             // TODO ???
             throw new DrawException("No more moves.");
         }

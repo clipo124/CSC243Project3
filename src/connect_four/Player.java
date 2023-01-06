@@ -11,7 +11,9 @@ public abstract class Player {
 
     public enum Action {
         PLAY,
-        QUIT
+        QUIT,
+        RESET,
+        UNDO
     }
 
     public static class PlayerMove {

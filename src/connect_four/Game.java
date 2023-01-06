@@ -4,6 +4,7 @@
 
 package connect_four;
 
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -62,9 +63,9 @@ public class Game {
             System.out.println(board.toString());
 
             System.out.print("Available moves: ");
-            int [] validMoves = board.getValidMoves();
-            for (int i = 0; i < validMoves.length; i++) {
-                System.out.print(validMoves[i] + " ");
+            List<Integer> validMoves = board.getValidMoves();
+            for (int i = 0; i < validMoves.size(); i++) {
+                System.out.print(validMoves.get(i) + " ");
             }
             System.out.println("");
 
@@ -100,6 +101,10 @@ public class Game {
                     // switch player
                     currentPlayer = (currentPlayer == Disc.YELLOW) ?
                         Disc.RED : Disc.YELLOW;
+                    break;
+                case RESET:
+                    System.out.println("Game Reset");
+                    board = new Board();
                     break;
                 default:
                     System.out.println("Unknown action");
