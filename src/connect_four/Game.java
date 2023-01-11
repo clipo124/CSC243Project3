@@ -4,10 +4,7 @@
 
 package connect_four;
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -20,6 +17,7 @@ import connect_four.Player.PlayerMove;
  *  The Game class has the game logic for a text based game of Connect Four
  */
 public class Game {
+    private Stack<Board> gameState = new Stack<Board>();
     private Board board;
     private Scanner input;
     private Map<Disc, Player> players;
@@ -53,12 +51,11 @@ public class Game {
     /**
      * The run loop for the text based game of Connect Four
      */
-    public void run() {
+    public void run() throws CloneNotSupportedException {
         System.out.println("Connect Four\n");
-
         // the game loop
         while (true) {
-
+            gameState.push((Board) board.clone());
             // print the board to the screen
             System.out.println(board.toString());
 
@@ -72,6 +69,30 @@ public class Game {
             // get the play move and perform the appropriate action
             PlayerMove pm = players.get(currentPlayer).getMove(board);
             switch (pm.action) {
+                case UNDO:
+                    // check if AI player is involved
+                    if (players.get(Disc.RED) instanceof AIPlayer || players.get(Disc.YELLOW) instanceof AIPlayer) {
+                        gameState.pop();
+                        if (!gameState.isEmpty() && gameState.size() > 2 ) {
+                                gameState.pop();
+                                board = gameState.pop();
+                        } else {
+                            System.out.println("There are no moves left to undo.");
+                        }
+                    } else {
+                        // otherwise it's a console vs console game
+                        gameState.pop();
+                        if (!gameState.isEmpty()) {
+                            board = gameState.pop();
+                            // switch player to negate player switch later
+                            currentPlayer = (currentPlayer == Disc.YELLOW) ?
+                                    Disc.RED : Disc.YELLOW;
+                        } else {
+                            System.out.println("There are no moves left to undo");
+                        }
+                    }
+                    break;
+
                 case QUIT:
                     System.exit(0);
                     break;
@@ -119,7 +140,7 @@ public class Game {
      *
      * @param args the command line argument array
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
         // Parse command line arguments
         boolean use_AI_for_yellow = false;
         boolean use_AI_for_red = false;
@@ -133,6 +154,6 @@ public class Game {
         }
 
         Game g = new Game(use_AI_for_yellow, use_AI_for_red);
-        g.run();
+          g.run();
     }
 }

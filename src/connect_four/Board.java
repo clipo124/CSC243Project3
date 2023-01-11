@@ -7,6 +7,7 @@ package connect_four;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Stack;
 
 /**
  * The Board class is a representation of the board state for a game of Connect
@@ -15,9 +16,14 @@ import java.util.Objects;
 public class Board implements Cloneable {
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        Board copiedBoard = null;
-        copiedBoard = (Board) super.clone();
+    protected Object clone() throws CloneNotSupportedException {
+        Board copiedBoard = new Board();
+        for (int i = 0; i < copiedBoard.board.length; i++) {
+            for (int j = 0; j < copiedBoard.board[i].length; j++) {
+                copiedBoard.board[i][j] = board[i][j];
+            }
+        }
+
         return copiedBoard;
     }
     public enum Disc {
